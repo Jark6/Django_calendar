@@ -4,13 +4,22 @@
 //let dp = new AirDatepicker("#datepicker-container-1");
 //let dp1 = new AirDatepicker("#datepicker-container-2");
 //let dp3 = new AirDatepicker("#datepicker-container-3");
+//import getAllDates from "Calendar.views"
 
 const container = document.getElementById('container');
 const dates = [
-  new Date('2023-06-01'),
-  new Date('2023-06-05'),
-  new Date('2023-06-10')
+  new Date('2023-07-01'),
+  new Date('2023-07-05'),
+  new Date('2023-07-10')
 ];
+
+let jsonStr = document.getElementById('off_date').textContent;
+let dateObj = JSON.parse(jsonStr);
+console.log(dateObj)
+//let jsDate = new Date(dateObj);
+
+//const container2 = {{ get_date }};
+
 let rowSerial = 0;
 for (let i = 0; i < 12; i++) {
     if (i==0 || i==6){
@@ -32,28 +41,30 @@ for (let i = 0; i < 12; i++) {
     multipleDates:true, 
     weekends:[6,0],
     showOtherMonths:false,
-    highlightWeekends:true,
+    //highlightWeekends:true,
     moveToOtherMonthsOnSelect: false,     
     navTitles: { days: '<strong >MMMM</strong>' },
     minDate:new Date(new Date().getFullYear(), i, 1),
     maxDate:new Date(new Date().getFullYear(), i, dm),
+      //selectedDates: jsDate,
     onRenderCell: function (date, cellType) {
         if (cellType === 'day') {
             const day = date.getDay();
             if (day === 6 || day === 0){
             return{
-              classes: 'selected',
+              classes: '-selected-',
             };
             }
         };
         }
-    //selectedDates: dates,
+
   });
   //$name.hide();
-    let docNode = document.querySelectorAll('div.-weekend-');
-    docNode.forEach(doc => doc.classList.add("-selected-"))
+    //let docNode = document.querySelectorAll('div.-weekend-');
+    //docNode.forEach(doc => doc.classList.add("-selected-"))
 
-    $name.selectDate(dates);
+    //$name.selectDate(dates);
+    //$name.selectDate(jsDate);
 }
 for (let i = 0; i < 12; i++) {
     const name = 'airDatepicker'+i;
