@@ -9,3 +9,6 @@ class ProductionCalendar(models.Model):
         ordering = ('-off_date',)
         verbose_name = 'Выходной день в производственном календаре'
         verbose_name_plural = 'Выходные дни в производственном календаре'
+
+    def __str__(self):
+        return f"{self.off_date}"

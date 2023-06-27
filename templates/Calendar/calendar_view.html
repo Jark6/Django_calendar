@@ -1,0 +1,34 @@
+<!-- templates/calendar_view.html -->
+{% extends "Calendar/base.html" %}
+{% block content %}
+  <div class="container-fluid">
+    <header class="p-3 mb-3 border-bottom">
+        <h1><a href="{% url 'home'%}">Производственный календарь</a></h1>
+    </header>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">App</a></li>
+            <li class="breadcrumb-item"><a href="#">Path</a></li>
+            <li class="breadcrumb-item"><a href="#">Info</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Calendar</li>
+        </ol>
+      </nav>
+    <main>
+        <div style="display: block" id="jsonData" data-json="{{ get_dates }}">  </div>
+        <input type="text" id="datepicker" name="datepicker">
+
+        <div class ="container-fluid" id="container">
+        </div>
+
+
+          <div id="my-data">
+              {{ get_all_dates|json_script:"off_date" }}
+          <script>
+              let myData = JSON.parse(document.getElementById('off_date').textContent);
+              console.log('111'+myData);
+          </script>
+          </div>
+
+    </main>
+  </div>
+{% endblock content %}
