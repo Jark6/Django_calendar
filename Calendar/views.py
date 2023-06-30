@@ -17,5 +17,3 @@ class CalendarPageView(TemplateView):
         print(json_data)
         json_data_dict = json.loads(json_data)
         return JsonResponse(list(get_all_dates), safe=False)#JsonResponse(json_data_dict, safe=False)
-
-

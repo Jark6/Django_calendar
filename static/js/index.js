@@ -18,6 +18,10 @@ let dateObj = JSON.parse(jsonStr);
 console.log(dateObj)
 let jsDate = new Date(dateObj);*/
 
+let jsonStr = document.getElementById('off_date').textContent;
+let dateObj = JSON.parse(jsonStr);
+console.log(dateObj)
+//let jsDate = new Date(dateObj);
 //const container2 = {{ get_date }};
 
 let rowSerial = 0;
@@ -41,9 +45,10 @@ for (let i = 0; i < 12; i++) {
     multipleDates:true, 
     weekends:[6,0],
     showOtherMonths:false,
-    highlightWeekends:true,
+    //highlightWeekends:true,
     moveToOtherMonthsOnSelect: false,     
-    navTitles: { days: '<strong >MMMM</strong>' },
+    navTitles: {
+    days: '<strong >MMMM</strong>' },
     minDate:new Date(new Date().getFullYear(), i, 1),
     maxDate:new Date(new Date().getFullYear(), i, dm),
       //selectedDates: jsDate,
@@ -66,8 +71,16 @@ for (let i = 0; i < 12; i++) {
     docNode.forEach(doc => doc.classList.add("-selected-"))
 
     $name.selectDate(dates);
+
+
+
    //$name.selectDate(jsDate);
+    //$name.selectDate(dates);
+    //$name.selectDate(jsDate);
 }
+
+    let docNode = document.querySelectorAll('div.air-datepicker-nav--title');
+    docNode.forEach(doc => doc.classList.add("-disabled-"))
 /*for (let i = 0; i < 12; i++) {
     const name = 'airDatepicker'+i;
     let $name;
