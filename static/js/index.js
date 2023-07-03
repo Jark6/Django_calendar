@@ -5,8 +5,22 @@
 //let dp1 = new AirDatepicker("#datepicker-container-2");
 //let dp3 = new AirDatepicker("#datepicker-container-3");
 //import getAllDates from "Calendar.views"
+var currentYear = new Date().getFullYear();
+document.getElementById("current-year").value = currentYear;
 
-const container = document.getElementById('container');
+function decrementYear() {
+    currentYear--;
+    document.getElementById("current-year").value = currentYear;
+    createCalendar(currentYear);
+    }
+
+function incrementYear() {
+    currentYear++;
+    document.getElementById("current-year").value = currentYear;
+    createCalendar(currentYear);
+    }
+
+
 const dates = [
   new Date('2023-07-01'),
   new Date('2023-07-05'),
@@ -24,6 +38,9 @@ console.log(dateObj)
 //let jsDate = new Date(dateObj);
 //const container2 = {{ get_date }};
 
+function createCalendar(currentYear){
+const container = document.getElementById('container');
+container.innerHTML='';
 let rowSerial = 0;
 for (let i = 0; i < 12; i++) {
     if (i==0 || i==6){
@@ -37,7 +54,7 @@ for (let i = 0; i < 12; i++) {
   const newContainer = document.createElement('div');
   newContainer.classList.add('col');
   row.appendChild(newContainer);
-  const dm=new Date(new Date().getFullYear(), i+1, 0).getDate();
+  const dm=new Date(currentYear, i+1, 0).getDate();
   const name = 'airDatepicker'+i;
   let $name = new AirDatepicker(newContainer, {
     inline:true, 
@@ -49,8 +66,8 @@ for (let i = 0; i < 12; i++) {
     moveToOtherMonthsOnSelect: false,     
     navTitles: {
     days: '<strong >MMMM</strong>' },
-    minDate:new Date(new Date().getFullYear(), i, 1),
-    maxDate:new Date(new Date().getFullYear(), i, dm),
+    minDate:new Date(currentYear, i, 1),
+    maxDate:new Date(currentYear, i, dm),
       //selectedDates: jsDate,
     onRenderCell: function (date, cellType) {
         if (cellType === 'day') {
@@ -78,7 +95,8 @@ for (let i = 0; i < 12; i++) {
     //$name.selectDate(dates);
     //$name.selectDate(jsDate);
 }
-
+}
+createCalendar(currentYear);
     let docNode = document.querySelectorAll('div.air-datepicker-nav--title');
     docNode.forEach(doc => doc.classList.add("-disabled-"))
 /*for (let i = 0; i < 12; i++) {
