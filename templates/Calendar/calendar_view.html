@@ -39,12 +39,19 @@
             <div class="input-group-prepend">
                 <button class="btn btn-outline-secondary" type="button" onclick="decrementYear()"><</button>
             </div>
-            <input type="text" readonly class="form-control text-center" id="current-year" value="0" placeholder="" aria-label="" aria-describedby="basic-addon1">
+            <input type="text" readonly class="form-control text-center" id="current-year" value="0" placeholder="" aria-label="" aria-describedby="basic-addon1" method="post">
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="button" onclick="incrementYear()">></button>
             </div>
         </div>
-
+        <div class="invisible date_feed2">
+            {{ off_dates }}
+            <ul>
+                {% for d in off_dates %}
+                <li class="date_feed">{{ d }}</li>
+                {% endfor %}
+            </ul>
+        </div>
         <div style="display: block" id="jsonData" data-json="{{ get_dates }}">  </div>
 
         <div class ="container-fluid" id="container">

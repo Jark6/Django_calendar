@@ -27,14 +27,17 @@ const dates = [
   new Date('2023-07-10')
 ];
 
+console.log(dates);
+
+let dateStr = document.querySelectorAll('.date_feed');
+//let dateObj = JSON.parse(jsonStr);
+//console.log(dateStr);
+let jsDates = Array.from(dateStr).map(item => new Date(item.textContent.trim()));
+console.log(jsDates);
+
 /*let jsonStr = document.getElementById('off_date').textContent;
 let dateObj = JSON.parse(jsonStr);
-console.log(dateObj)
-let jsDate = new Date(dateObj);*/
-
-let jsonStr = document.getElementById('off_date').textContent;
-let dateObj = JSON.parse(jsonStr);
-console.log(dateObj)
+console.log(dateObj)*/
 //let jsDate = new Date(dateObj);
 //const container2 = {{ get_date }};
 
@@ -91,7 +94,7 @@ for (let i = 0; i < 12; i++) {
 
 
 
-   //$name.selectDate(jsDate);
+   $name.selectDate(jsDates);
     //$name.selectDate(dates);
     //$name.selectDate(jsDate);
 }
