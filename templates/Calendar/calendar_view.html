@@ -36,15 +36,16 @@
             </button>
         </div> -->
         <div class="input-group mb-3">
+            {% csrf_token %}
             <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary" type="button" onclick="decrementYear()"><</button>
+                <button class="btn btn-outline-secondary" type="button" onclick="decrementYear()"><{% csrf_token %}</button>
             </div>
             <input type="text" readonly class="form-control text-center" id="current-year" value="0" placeholder="" aria-label="" aria-describedby="basic-addon1" method="post">
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" onclick="incrementYear()">></button>
+                <button class="btn btn-outline-secondary" type="button" onclick="incrementYear()">>{% csrf_token %}</button>
             </div>
         </div>
-        <div class="invisible date_feed2">
+        <div id='off_dates_container' class="invisible date_feed2">
             {{ off_dates }}
             <ul>
                 {% for d in off_dates %}

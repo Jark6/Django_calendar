@@ -5,21 +5,6 @@
 //let dp1 = new AirDatepicker("#datepicker-container-2");
 //let dp3 = new AirDatepicker("#datepicker-container-3");
 //import getAllDates from "Calendar.views"
-var currentYear = new Date().getFullYear();
-document.getElementById("current-year").value = currentYear;
-
-function decrementYear() {
-    currentYear--;
-    document.getElementById("current-year").value = currentYear;
-    createCalendar(currentYear);
-    }
-
-function incrementYear() {
-    currentYear++;
-    document.getElementById("current-year").value = currentYear;
-    createCalendar(currentYear);
-    }
-
 
 const dates = [
   new Date('2023-07-01'),
@@ -27,13 +12,77 @@ const dates = [
   new Date('2023-07-10')
 ];
 
-console.log(dates);
+var currentYear = new Date().getFullYear();
+document.getElementById("current-year").value = currentYear;
+getAllYearDates ();
+createCalendar(currentYear);
 
+function decrementYear() {
+    currentYear--;
+    document.getElementById("current-year").value = currentYear;
+    postYear();
+    //getAllYearDates ();
+    createCalendar(currentYear);
+
+    }
+
+function incrementYear() {
+    currentYear++;
+    document.getElementById("current-year").value = currentYear;
+    postYear();
+    //getAllYearDates ();
+    createCalendar(currentYear);
+    }
+
+function getAllYearDates () {
+postYear();
 let dateStr = document.querySelectorAll('.date_feed');
-//let dateObj = JSON.parse(jsonStr);
-//console.log(dateStr);
 let jsDates = Array.from(dateStr).map(item => new Date(item.textContent.trim()));
 console.log(jsDates);
+//$name.selectDate(jsDates);
+}
+
+
+console.log(dates);
+function postYear() {
+    /*let xhr = new XMLHttpRequest();
+    xhr.open('POST', '/', false);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log(xhr.responseText);
+        }
+    };
+    let data = 'my_date=' + encodeURIComponent(currentYear);
+    xhr.send(data);*/
+//$("#year_container").empty();
+let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+$.ajax({
+    url: "/",
+    type: "POST",
+    headers: {"X-CSRFToken": csrftoken},
+    data: {'my_year': currentYear},
+    success: function(response) {
+        //console.log(response);
+        // $('#date_feed').html(response);
+        //alert("success");
+         //$('#off_dates_container').html(response);
+        var $response = $(response); // Создаем jQuery-объект из HTML-кода
+        var $myElement = $response.find('#off_dates_container'); // Находим нужный элемент внутри HTML-кода
+        $('#off_dates_container').html($myElement.html());
+    }
+});
+getAllYearDates ()
+}
+
+
+
+
+
+//let dateObj = JSON.parse(jsonStr);
+//console.log(dateStr);
+
 
 /*let jsonStr = document.getElementById('off_date').textContent;
 let dateObj = JSON.parse(jsonStr);
@@ -94,15 +143,17 @@ for (let i = 0; i < 12; i++) {
 
 
 
-   $name.selectDate(jsDates);
+
     //$name.selectDate(dates);
     //$name.selectDate(jsDate);
 }
 }
-createCalendar(currentYear);
+
+
     let docNode = document.querySelectorAll('div.air-datepicker-nav--title');
     docNode.forEach(doc => doc.classList.add("-disabled-"))
 /*for (let i = 0; i < 12; i++) {
     const name = 'airDatepicker'+i;
     let $name;
     }*/
+     //$name.selectDate(jsDates);
