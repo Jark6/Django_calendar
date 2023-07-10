@@ -15,18 +15,31 @@ def get_dates(request):
     #print(json_data)
     #json_data_dict = json.loads(json_data)
    # return JsonResponse(json_data, safe=False)#JsonResponse(list(get_all_dates), safe=False)
+    if request.method == 'GET':
+        year = request.GET.get('year')
+        dates = list(ProductionCalendar.objects.filter(off_date__year=year).values('off_date'))
+        dates_list = [d['off_date'].strftime('%Y-%m-%d') for d in dates]
+        context = {'off_dates': dates_list}
+        return render(request, "Calendar/calendar_view.html", context)
     if request.method == 'POST':
         year = request.POST.get('my_year')
         dates = list(ProductionCalendar.objects.filter(off_date__year=year).values('off_date'))
         dates_list = [d['off_date'].strftime('%Y-%m-%d') for d in dates]
         context = {'off_dates': dates_list}
         return render(request, 'Calendar/calendar_view.html', context)
-    #else:
-     #   return render(request, 'Calendar/calendar_view.html')
+    else:
+        return render(request, 'Calendar/calendar_view.html')
 
-def index(request):
-    data = {'test' : 'wow'}
-    return render(request, "Calendar/calendar_view.html", data)
+def save_dates(request):
+  if request.method == 'POST':
+    year = request.POST.get('my_year')
+    dates = request.POST.get('my_dates')
+    ProductionCalendar.objects.filter(off_date__year=year).delete()
+    for date in dates:
+        my_date = ProductionCalendar(my_date=date)
+        my_date.save()
+  else:
+    return render(request, "Calendar/calendar_edit.html")
 
 class CalendarPageView(TemplateView):
     model = ProductionCalendar

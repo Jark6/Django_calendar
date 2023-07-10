@@ -1,5 +1,6 @@
 <!-- templates/calendar_view.html -->
 {% extends "Calendar/base.html" %}
+{% block title %}Calendar View{% endblock title %}
 {% block content %}
   <div class="container-fluid">
     <header class="p-3 mb-3 border-bottom">
@@ -45,7 +46,7 @@
                 <button class="btn btn-outline-secondary" type="button" onclick="incrementYear()">>{% csrf_token %}</button>
             </div>
         </div>
-        <div id='off_dates_container' class="invisible date_feed2">
+        <div style="display:none" id='off_dates_container' class="invisible date_feed2">
             {{ off_dates }}
             <ul>
                 {% for d in off_dates %}
@@ -66,10 +67,12 @@
               console.log('111'+myData);
           </script>
           </div>
+        {% block main_buttons %}
         <div class="input-group-append d-flex justify-content-end">
-            <button type="button" class="btn btn-primary">Редактировать</button>
+            <a href="{% url 'edit'%}"><button type="button" class="btn btn-primary">Редактировать</button></a>
             <button type="button" class="btn btn-secondary" onclick="createCalendar(currentYear)">Обновить</button>
         </div>
+        {% endblock main_buttons %}
     </main>
   </div>
 {% endblock content %}
