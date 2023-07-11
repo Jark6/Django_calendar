@@ -15,27 +15,6 @@
         </ol>
       </nav>
     <main>
-        <!--<div id="carouselExampleFade" class="carousel slide carousel-fade">
-            <div class="carousel-inner">
-                <div class="carousel-item">
-                    <img src="https://www.uralairlines.ru/upload/iblock/e36/e3697aee6e92789a69808154f62a3a08.jpg" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item active">
-                    <img src="https://www.uralairlines.ru/upload/iblock/207/207272881887e271a34201d7279c99f0.jpg" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="https://www.uralairlines.ru/upload/iblock/532/532819aaa76e690f68058fc0e5d963d6.jpg" class="d-block w-100" alt="...">
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div> -->
         <div class="input-group mb-3">
             {% csrf_token %}
             <div class="input-group-prepend">
@@ -69,8 +48,8 @@
           </div>
         {% block main_buttons %}
         <div class="input-group-append d-flex justify-content-end">
-            <a href="{% url 'edit'%}"><button type="button" class="btn btn-primary">Редактировать</button></a>
-            <button type="button" class="btn btn-secondary" onclick="createCalendar(currentYear)">Обновить</button>
+            <button type="button" id="edit-btn" class="btn btn-primary">Редактировать</button>
+            <button type="button" class="btn btn-secondary button-hidden" id="reboot-btn" onclick="createCalendar(currentYear)">Обновить</button>
         </div>
         {% endblock main_buttons %}
     </main>

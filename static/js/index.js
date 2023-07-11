@@ -1,20 +1,15 @@
-const dates = [
-  new Date('2023-07-01'),
-  new Date('2023-07-05'),
-  new Date('2023-07-10')
-];
-
 let jsDates=null;
 
 var currentYear = new Date().getFullYear();
 document.getElementById("current-year").value = currentYear;
-//getDateArray(currentYear);
-postYear();
+getDateArray(currentYear);
+//postYear();
 
 function decrementYear() {
     currentYear--;
     document.getElementById("current-year").value = currentYear;
-    postYear();
+    getDateArray(currentYear);
+    //postYear();
     //getAllYearDates ();
     //createCalendar(currentYear);
 
@@ -23,7 +18,8 @@ function decrementYear() {
 function incrementYear() {
     currentYear++;
     document.getElementById("current-year").value = currentYear;
-    postYear();
+    getDateArray(currentYear);
+    //postYear();
     //getAllYearDates ();
     //createCalendar(currentYear);
     }
@@ -35,14 +31,13 @@ console.log(jsDates);
 //$name.selectDate(jsDates);
 }
 
-/*function getDateArray(year) {
+function getDateArray(year) {
   $.ajax({
     url: '/?year='+year,
     type: 'GET',
     dataType: 'html',
     success: function(response) {
-      var myDates = response.my_dates;
-      console.log(myDates);
+        //console.log(response);
         var $response = $(response); // Создаем jQuery-объект из HTML-кода
         var $myElement = $response.find('#off_dates_container'); // Находим нужный элемент внутри HTML-кода
         $('#off_dates_container').html($myElement.html());
@@ -52,10 +47,13 @@ console.log(jsDates);
       console.log('Ошибка запроса');
     }
   });
-}*/
+  setTimeout(() => {createCalendar(currentYear);}, 100)
+}
 //console.log(dates);
+/*
 function postYear() {
-    /*let xhr = new XMLHttpRequest();
+    */
+/*let xhr = new XMLHttpRequest();
     xhr.open('POST', '/', false);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
@@ -64,7 +62,8 @@ function postYear() {
         }
     };
     let data = 'my_date=' + encodeURIComponent(currentYear);
-    xhr.send(data);*/
+    xhr.send(data);*//*
+
 //$("#year_container").empty();
 let csrftoken = $("[name=csrfmiddlewaretoken]").val();
 
@@ -82,6 +81,7 @@ $.ajax({
 setTimeout(() => {createCalendar(currentYear);}, 100)
 
 }
+*/
 
 function createCalendar(currentYear){
 const container = document.getElementById('container');
@@ -128,21 +128,11 @@ for (let i = 0; i < 12; i++) {
 
   });
 
-    $name.selectDate(dates);
-  //$name.hide();
   if(jsDates==0){
     let docNode = document.querySelectorAll('div.-weekend-');
     docNode.forEach(doc => doc.classList.add("-selected-"));}
   else{
     $name.selectDate(jsDates);}
-
-
-
-
-
-
-    //$name.selectDate(dates);
-
 }
 }
 
@@ -151,28 +141,31 @@ let selectedDates = [];
 var dateElements = document.querySelectorAll('div.air-datepicker-cell.-selected-');
 dateElements.forEach(function(element) {
     var year = element.dataset.year;
-    var month = element.dataset.month;
+    var month = parseInt(element.dataset.month)+1;
     var day = element.dataset.date;
-    var date = new Date(year, month, day);
+    var date = year+"-"+month.toString()+"-"+day;//new Date(year, month, day);
     selectedDates.push(date);
   });
   console.log(selectedDates);
+  console.log(JSON.stringify(selectedDates));
+
 
 let csrftoken = $("[name=csrfmiddlewaretoken]").val();
 
 $.ajax({
-    url: "/edit",
+    url: "/",
     type: "POST",
     headers: {"X-CSRFToken": csrftoken},
     data: {'my_year': currentYear,
-           'my_dates':selectedDates},
+           'my_dates': JSON.stringify(selectedDates)},
     success: function(response) {
-        console.log(response)
-    }
+        console.log("All dates are sent successfully")
+    },
+    error: function(response) {
+    console.log('something happened'+response.error);
+  }
 });
 }
-/*setTimeout(() =>{
-    let docNode1 = document.querySelectorAll("div.-day-");
-    docNode1.forEach(doc => doc.classList.add("-disabled-"));
-    let docNode2 = document.querySelectorAll("div.air-datepicker-nav--title");
-    docNode2.forEach(doc => doc.classList.add("-disabled-"));},500);*/
+
+function changeButton(button) {
+}
