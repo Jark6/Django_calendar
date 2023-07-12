@@ -26,7 +26,7 @@ def get_dates(request):
     if request.method == 'POST':
         year = request.POST.get('my_year')
         dates = request.POST.get('my_dates')
-        #ProductionCalendar.objects.filter(off_date__year=year).delete()
+        ProductionCalendar.objects.filter(off_date__year=year).delete()
         dates_list = json.loads(dates)
         print(year)
         print(dates_list)

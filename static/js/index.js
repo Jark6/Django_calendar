@@ -5,6 +5,10 @@ document.getElementById("current-year").value = currentYear;
 getDateArray(currentYear);
 //postYear();
 
+function getCurrentYear(){
+return currentYear;
+}
+
 function decrementYear() {
     currentYear--;
     document.getElementById("current-year").value = currentYear;
@@ -115,7 +119,7 @@ for (let i = 0; i < 12; i++) {
     minDate:new Date(currentYear, i, 1),
     maxDate:new Date(currentYear, i, dm),
       //selectedDates: jsDate,
-    onRenderCell: function (date, cellType) {
+    /*onRenderCell: function (date, cellType) {
         if (cellType === 'day') {
             const day = date.getDay();
             if (day === 6 || day === 0){
@@ -124,12 +128,12 @@ for (let i = 0; i < 12; i++) {
             };
             }
         };
-        }
+        }*/
 
   });
 
   if(jsDates==0){
-    let docNode = document.querySelectorAll('div.-weekend-');
+    let docNode = document.querySelectorAll('div.-weekend-:not(.-disabled-)');
     docNode.forEach(doc => doc.classList.add("-selected-"));}
   else{
     $name.selectDate(jsDates);}
@@ -167,5 +171,53 @@ $.ajax({
 });
 }
 
-function changeButton(button) {
+var editButton = document.getElementById('edit-btn');
+editButton.addEventListener('click', function () {changeButtons(editButton);});
+var saveButton = document.getElementById('save-btn');
+saveButton.addEventListener('click', function () {changeButtons(saveButton);});
+var cancelButton = document.getElementById('cancel-btn');
+cancelButton.addEventListener('click', function () {changeButtons(cancelButton);});
+var rebootButton = document.getElementById('reboot-btn');
+rebootButton.addEventListener('click', function(){createCalendar(currentYear);});
+var confirmButton = document.getElementById('confirm-btn');
+confirmButton.addEventListener('click', ()=>{changeButtons(confirmButton)})
+var incrementYearButton = document.getElementById('incrementYear-btn');
+var decrementYearButton = document.getElementById('decrementYear-btn');
+
+function changeButtons(button) {
+    if (button.id === 'edit-btn' && button.classList.contains('button-active')){
+        hideButton(button);
+        hideButton(incrementYearButton);
+        hideButton(decrementYearButton);
+        hideButton(rebootButton);
+        revealButton(saveButton);
+        revealButton(cancelButton);
+        }
+    else if (button.id === 'cancel-btn' && button.classList.contains('button-active')){
+        hideButton(button);
+        hideButton(saveButton);
+        revealButton(incrementYearButton);
+        revealButton(decrementYearButton);
+        revealButton(editButton);
+        revealButton(rebootButton);
+        }
+    else if (button.id === 'save-btn' && button.classList.contains('button-active')){
+        var promise = new Promise(function(resolve,reject){$('#saveModalCenter').modal('show', function(){resolve();})})
+        promise.then(()=>{changeButtons(cancelButton)})
+        }
+    else if (button.id === 'confirm-btn'){
+        $('#saveModalCenter').modal('hide');
+        changeButtons(cancelButton);
+        postDates();
+        }
+}
+
+function hideButton(button){
+    button.classList.remove('button-active');
+    button.classList.add('button-hidden');
+}
+
+function revealButton(button){
+    button.classList.remove('button-hidden');
+    button.classList.add('button-active');
 }
