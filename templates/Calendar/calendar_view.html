@@ -1,7 +1,8 @@
 <!-- templates/calendar_view.html -->
 {% extends "Calendar/base.html" %}
+{% block title %}Calendar View{% endblock title %}
 {% block content %}
-  <div class="container-fluid">
+<div class="container-fluid" xmlns="http://www.w3.org/1999/html">
     <header class="p-3 mb-3 border-bottom">
         <h1><a href="{% url 'home'%}">Производственный календарь</a></h1>
     </header>
@@ -14,38 +15,17 @@
         </ol>
       </nav>
     <main>
-        <!--<div id="carouselExampleFade" class="carousel slide carousel-fade">
-            <div class="carousel-inner">
-                <div class="carousel-item">
-                    <img src="https://www.uralairlines.ru/upload/iblock/e36/e3697aee6e92789a69808154f62a3a08.jpg" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item active">
-                    <img src="https://www.uralairlines.ru/upload/iblock/207/207272881887e271a34201d7279c99f0.jpg" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="https://www.uralairlines.ru/upload/iblock/532/532819aaa76e690f68058fc0e5d963d6.jpg" class="d-block w-100" alt="...">
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div> -->
         <div class="input-group mb-3">
             {% csrf_token %}
             <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary" type="button" onclick="decrementYear()"><{% csrf_token %}</button>
+                <button class="btn btn-outline-secondary button-active" id="decrementYear-btn" type="button" onclick="decrementYear()"><</button>
             </div>
             <input type="text" readonly class="form-control text-center" id="current-year" value="0" placeholder="" aria-label="" aria-describedby="basic-addon1" method="post">
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" onclick="incrementYear()">>{% csrf_token %}</button>
+                <button class="btn btn-outline-secondary button-active" id="incrementYear-btn" type="button" onclick="incrementYear()">></button>
             </div>
         </div>
-        <div id='off_dates_container' class="invisible date_feed2">
+        <div style="display:none" id='off_dates_container' class="invisible date_feed2">
             {{ off_dates }}
             <ul>
                 {% for d in off_dates %}
@@ -62,14 +42,47 @@
           <div id="my-data">
               {{ get_all_dates|json_script:"off_date" }}
           <script>
-              let myData = JSON.parse(document.getElementById('off_date').textContent);
+              let myData = JSON.parse(document.getElementById('off_dates_container').textContent);
               console.log('111'+myData);
           </script>
           </div>
-        <div class="input-group-append d-flex justify-content-end">
-            <button type="button" class="btn btn-primary">Редактировать</button>
-            <button type="button" class="btn btn-secondary" onclick="createCalendar(currentYear)">Обновить</button>
+        {% block main_buttons %}
+        <div class="footer-btn">
+            <div class="input-group-append d-flex justify-content-end">
+                <button type="button" id="edit-btn" class="btn btn-primary button-active">Редактировать</button>
+                <button type="button" id="save-btn" class="btn btn-danger button-hidden">Сохранить</button>
+                <button type="button" id="cancel-btn" class="btn btn-warning button-hidden">Отмена</button>
+                <button type="button" id="reboot-btn"  class="btn btn-secondary button-active">Обновить</button>
+            </div>
+            </div>
+        <div class="modal fade" id="saveModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalLongTitle">Сохранение календаря</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id="confirm-info" class="modal-body">
+                        Вы уверены, что хотите сохранить экземпляр календаря за этот год?
+                    </div>
+                    <script>
+                    setTimeout(()=>{document.getElementById('confirm-info').innerText='Вы уверены, что хотите сохранить экземпляр календаря за '+document.getElementById("current-year").value.toString()+' год?'},500)</script>
+                    <div class="modal-footer">
+                        <button type="button" id="confirm-btn" class="btn btn-primary">Сохранить изменения</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="alert alert-success alert-dismissible fade show" id="alert_success_upload" role="alert" style="display: none;">
+            <span>Сохранение данных прошло успешно!</span>
+          <button type="button" class="close" onclick="$('#alert_success_upload').fadeOut()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endblock main_buttons %}
     </main>
   </div>
 {% endblock content %}

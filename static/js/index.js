@@ -1,51 +1,63 @@
-//import AirDatepicker from 'air-datepicker';
-//import '../css/air-datepicker.css';
-
-//let dp = new AirDatepicker("#datepicker-container-1");
-//let dp1 = new AirDatepicker("#datepicker-container-2");
-//let dp3 = new AirDatepicker("#datepicker-container-3");
-//import getAllDates from "Calendar.views"
-
-const dates = [
-  new Date('2023-07-01'),
-  new Date('2023-07-05'),
-  new Date('2023-07-10')
-];
+let jsDates=null;
 
 var currentYear = new Date().getFullYear();
 document.getElementById("current-year").value = currentYear;
-getAllYearDates ();
-createCalendar(currentYear);
+getDateArray(currentYear);
+//postYear();
+
+function getCurrentYear(){
+return currentYear;
+}
 
 function decrementYear() {
     currentYear--;
     document.getElementById("current-year").value = currentYear;
-    postYear();
+    getDateArray(currentYear);
+    //postYear();
     //getAllYearDates ();
-    createCalendar(currentYear);
+    //createCalendar(currentYear);
 
     }
 
 function incrementYear() {
     currentYear++;
     document.getElementById("current-year").value = currentYear;
-    postYear();
+    getDateArray(currentYear);
+    //postYear();
     //getAllYearDates ();
-    createCalendar(currentYear);
+    //createCalendar(currentYear);
     }
 
 function getAllYearDates () {
-postYear();
-let dateStr = document.querySelectorAll('.date_feed');
-let jsDates = Array.from(dateStr).map(item => new Date(item.textContent.trim()));
+const dateStr = document.querySelectorAll('.date_feed');
+jsDates = Array.from(dateStr).map(item => new Date(item.textContent.trim()));
 console.log(jsDates);
 //$name.selectDate(jsDates);
 }
 
-
-console.log(dates);
+function getDateArray(year) {
+  $.ajax({
+    url: '/?year='+year,
+    type: 'GET',
+    dataType: 'html',
+    success: function(response) {
+        //console.log(response);
+        var $response = $(response); // Создаем jQuery-объект из HTML-кода
+        var $myElement = $response.find('#off_dates_container'); // Находим нужный элемент внутри HTML-кода
+        $('#off_dates_container').html($myElement.html());
+      // Здесь можно вызвать функцию-обработчик с полученным массивом
+    },
+    error: function(xhr, status, error) {
+      console.log('Ошибка запроса');
+    }
+  });
+  setTimeout(() => {createCalendar(currentYear);}, 100)
+}
+//console.log(dates);
+/*
 function postYear() {
-    /*let xhr = new XMLHttpRequest();
+    */
+/*let xhr = new XMLHttpRequest();
     xhr.open('POST', '/', false);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
@@ -54,7 +66,8 @@ function postYear() {
         }
     };
     let data = 'my_date=' + encodeURIComponent(currentYear);
-    xhr.send(data);*/
+    xhr.send(data);*//*
+
 //$("#year_container").empty();
 let csrftoken = $("[name=csrfmiddlewaretoken]").val();
 
@@ -64,35 +77,20 @@ $.ajax({
     headers: {"X-CSRFToken": csrftoken},
     data: {'my_year': currentYear},
     success: function(response) {
-        //console.log(response);
-        // $('#date_feed').html(response);
-        //alert("success");
-         //$('#off_dates_container').html(response);
         var $response = $(response); // Создаем jQuery-объект из HTML-кода
         var $myElement = $response.find('#off_dates_container'); // Находим нужный элемент внутри HTML-кода
         $('#off_dates_container').html($myElement.html());
     }
 });
-getAllYearDates ()
+setTimeout(() => {createCalendar(currentYear);}, 100)
+
 }
-
-
-
-
-
-//let dateObj = JSON.parse(jsonStr);
-//console.log(dateStr);
-
-
-/*let jsonStr = document.getElementById('off_date').textContent;
-let dateObj = JSON.parse(jsonStr);
-console.log(dateObj)*/
-//let jsDate = new Date(dateObj);
-//const container2 = {{ get_date }};
+*/
 
 function createCalendar(currentYear){
 const container = document.getElementById('container');
 container.innerHTML='';
+getAllYearDates();
 let rowSerial = 0;
 for (let i = 0; i < 12; i++) {
     if (i==0 || i==6){
@@ -121,7 +119,7 @@ for (let i = 0; i < 12; i++) {
     minDate:new Date(currentYear, i, 1),
     maxDate:new Date(currentYear, i, dm),
       //selectedDates: jsDate,
-    onRenderCell: function (date, cellType) {
+    /*onRenderCell: function (date, cellType) {
         if (cellType === 'day') {
             const day = date.getDay();
             if (day === 6 || day === 0){
@@ -130,30 +128,99 @@ for (let i = 0; i < 12; i++) {
             };
             }
         };
-        }
+        }*/
 
   });
 
-
-  //$name.hide();
-    let docNode = document.querySelectorAll('div.-weekend-');
-    docNode.forEach(doc => doc.classList.add("-selected-"))
-
-    $name.selectDate(dates);
-
-
-
-
-    //$name.selectDate(dates);
-    //$name.selectDate(jsDate);
+  if(jsDates==0){
+    let docNode = document.querySelectorAll('div.-weekend-:not(.-disabled-)');
+    docNode.forEach(doc => doc.classList.add("-selected-"));}
+  else{
+    $name.selectDate(jsDates);}
 }
 }
 
+function postDates() {
+let selectedDates = [];
+var dateElements = document.querySelectorAll('div.air-datepicker-cell.-selected-');
+dateElements.forEach(function(element) {
+    var year = element.dataset.year;
+    var month = parseInt(element.dataset.month)+1;
+    var day = element.dataset.date;
+    var date = year+"-"+month.toString()+"-"+day;//new Date(year, month, day);
+    selectedDates.push(date);
+  });
+  console.log(selectedDates);
+  console.log(JSON.stringify(selectedDates));
 
-    let docNode = document.querySelectorAll('div.air-datepicker-nav--title');
-    docNode.forEach(doc => doc.classList.add("-disabled-"))
-/*for (let i = 0; i < 12; i++) {
-    const name = 'airDatepicker'+i;
-    let $name;
-    }*/
-     //$name.selectDate(jsDates);
+
+let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+$.ajax({
+    url: "/",
+    type: "POST",
+    headers: {"X-CSRFToken": csrftoken},
+    data: {'my_year': currentYear,
+           'my_dates': JSON.stringify(selectedDates)},
+    success: function(response) {
+        console.log("All dates are sent successfully");
+        $('#alert_success_upload').fadeIn();
+        setTimeout(()=>{$('#alert_success_upload').fadeOut();}, 10000)
+    },
+    error: function(response) {
+    console.log('something happened'+response.error);
+  }
+});
+}
+
+var editButton = document.getElementById('edit-btn');
+editButton.addEventListener('click', function () {changeButtons(editButton);});
+var saveButton = document.getElementById('save-btn');
+saveButton.addEventListener('click', function () {changeButtons(saveButton);});
+var cancelButton = document.getElementById('cancel-btn');
+cancelButton.addEventListener('click', function () {changeButtons(cancelButton);});
+var rebootButton = document.getElementById('reboot-btn');
+rebootButton.addEventListener('click', function(){createCalendar(currentYear);});
+var confirmButton = document.getElementById('confirm-btn');
+confirmButton.addEventListener('click', ()=>{changeButtons(confirmButton)})
+var incrementYearButton = document.getElementById('incrementYear-btn');
+var decrementYearButton = document.getElementById('decrementYear-btn');
+
+function changeButtons(button) {
+    if (button.id === 'edit-btn' && button.classList.contains('button-active')){
+        hideButton(button);
+        hideButton(incrementYearButton);
+        hideButton(decrementYearButton);
+        hideButton(rebootButton);
+        revealButton(saveButton);
+        revealButton(cancelButton);
+        }
+    else if (button.id === 'cancel-btn' && button.classList.contains('button-active')){
+        hideButton(button);
+        hideButton(saveButton);
+        revealButton(incrementYearButton);
+        revealButton(decrementYearButton);
+        revealButton(editButton);
+        revealButton(rebootButton);
+        }
+    else if (button.id === 'save-btn' && button.classList.contains('button-active')){
+        var promise = new Promise(function(resolve,reject){$('#saveModalCenter').modal('show', function(){resolve();})})
+        promise.then(()=>{changeButtons(cancelButton)})
+        }
+    else if (button.id === 'confirm-btn'){
+        $('#saveModalCenter').modal('hide');
+        changeButtons(cancelButton);
+        postDates();
+
+        }
+}
+
+function hideButton(button){
+    button.classList.remove('button-active');
+    button.classList.add('button-hidden');
+}
+
+function revealButton(button){
+    button.classList.remove('button-hidden');
+    button.classList.add('button-active');
+}

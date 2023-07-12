@@ -1,0 +1,9 @@
+<!-- templates/calendar_view.html -->
+{% extends "Calendar/calendar_view.html" %}
+{% block title %}Calendar Edit{% endblock title %}
+        {% block main_buttons %}
+        <div class="input-group-append d-flex justify-content-end">
+            <button type="button" class="btn btn-primary" onclick="postDates()">Сохранить</button>
+            <a href="{% url 'home'%}"><button type="button" class="btn btn-secondary">Отмена</button></a>
+        </div>
+        {% endblock main_buttons %}
