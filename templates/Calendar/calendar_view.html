@@ -7,7 +7,7 @@
         <h1><a href="{% url 'home'%}">Производственный календарь</a></h1>
     </header>
       <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
+        <ol class="breadcrumb" id="breadcrumb-list">
             <li class="breadcrumb-item"><a href="#">App</a></li>
             <li class="breadcrumb-item"><a href="#">Path</a></li>
             <li class="breadcrumb-item"><a href="#">Info</a></li>
@@ -18,34 +18,24 @@
         <div class="input-group mb-3">
             {% csrf_token %}
             <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary button-active" id="decrementYear-btn" type="button" onclick="decrementYear()"><</button>
+                <button class="btn btn-outline-secondary button-active" id="decrementYear-btn" type="button"><</button>
             </div>
             <input type="text" readonly class="form-control text-center" id="current-year" value="0" placeholder="" aria-label="" aria-describedby="basic-addon1" method="post">
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary button-active" id="incrementYear-btn" type="button" onclick="incrementYear()">></button>
+                <button class="btn btn-outline-secondary button-active" id="incrementYear-btn" type="button">></button>
             </div>
         </div>
         <div style="display:none" id='off_dates_container' class="invisible date_feed2">
-            {{ off_dates }}
+            <!--{{ off_dates }}-->
             <ul>
                 {% for d in off_dates %}
                 <li class="date_feed">{{ d }}</li>
                 {% endfor %}
             </ul>
         </div>
-        <div style="display: block" id="jsonData" data-json="{{ get_dates }}">  </div>
-
-        <div class ="container-fluid" id="container">
+        <div class ="container-fluid -view-" id="container">
         </div>
 
-
-          <div id="my-data">
-              {{ get_all_dates|json_script:"off_date" }}
-          <script>
-              let myData = JSON.parse(document.getElementById('off_dates_container').textContent);
-              console.log('111'+myData);
-          </script>
-          </div>
         {% block main_buttons %}
         <div class="footer-btn">
             <div class="input-group-append d-flex justify-content-end">

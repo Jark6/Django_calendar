@@ -1,9 +1,8 @@
-let jsDates=null;
+let inDates=null;
 
 var currentYear = new Date().getFullYear();
 document.getElementById("current-year").value = currentYear;
 getDateArray(currentYear);
-//postYear();
 
 function getCurrentYear(){
 return currentYear;
@@ -13,27 +12,18 @@ function decrementYear() {
     currentYear--;
     document.getElementById("current-year").value = currentYear;
     getDateArray(currentYear);
-    //postYear();
-    //getAllYearDates ();
-    //createCalendar(currentYear);
-
-    }
+     }
 
 function incrementYear() {
     currentYear++;
     document.getElementById("current-year").value = currentYear;
     getDateArray(currentYear);
-    //postYear();
-    //getAllYearDates ();
-    //createCalendar(currentYear);
     }
 
 function getAllYearDates () {
-const dateStr = document.querySelectorAll('.date_feed');
-jsDates = Array.from(dateStr).map(item => new Date(item.textContent.trim()));
-console.log(jsDates);
-//$name.selectDate(jsDates);
-}
+    const dateStr = document.querySelectorAll('.date_feed');
+    inDates = Array.from(dateStr).map(item => new Date(item.textContent.trim()));
+    }
 
 function getDateArray(year) {
   $.ajax({
@@ -41,11 +31,9 @@ function getDateArray(year) {
     type: 'GET',
     dataType: 'html',
     success: function(response) {
-        //console.log(response);
-        var $response = $(response); // Создаем jQuery-объект из HTML-кода
-        var $myElement = $response.find('#off_dates_container'); // Находим нужный элемент внутри HTML-кода
+        var $response = $(response);
+        var $myElement = $response.find('#off_dates_container');
         $('#off_dates_container').html($myElement.html());
-      // Здесь можно вызвать функцию-обработчик с полученным массивом
     },
     error: function(xhr, status, error) {
       console.log('Ошибка запроса');
@@ -53,39 +41,6 @@ function getDateArray(year) {
   });
   setTimeout(() => {createCalendar(currentYear);}, 100)
 }
-//console.log(dates);
-/*
-function postYear() {
-    */
-/*let xhr = new XMLHttpRequest();
-    xhr.open('POST', '/', false);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(xhr.responseText);
-        }
-    };
-    let data = 'my_date=' + encodeURIComponent(currentYear);
-    xhr.send(data);*//*
-
-//$("#year_container").empty();
-let csrftoken = $("[name=csrfmiddlewaretoken]").val();
-
-$.ajax({
-    url: "/",
-    type: "POST",
-    headers: {"X-CSRFToken": csrftoken},
-    data: {'my_year': currentYear},
-    success: function(response) {
-        var $response = $(response); // Создаем jQuery-объект из HTML-кода
-        var $myElement = $response.find('#off_dates_container'); // Находим нужный элемент внутри HTML-кода
-        $('#off_dates_container').html($myElement.html());
-    }
-});
-setTimeout(() => {createCalendar(currentYear);}, 100)
-
-}
-*/
 
 function createCalendar(currentYear){
 const container = document.getElementById('container');
@@ -112,31 +67,18 @@ for (let i = 0; i < 12; i++) {
     multipleDates:true, 
     weekends:[6,0],
     showOtherMonths:false,
-    //highlightWeekends:true,
-    moveToOtherMonthsOnSelect: false,     
+    moveToOtherMonthsOnSelect: false,
     navTitles: {
     days: '<strong >MMMM</strong>' },
     minDate:new Date(currentYear, i, 1),
     maxDate:new Date(currentYear, i, dm),
-      //selectedDates: jsDate,
-    /*onRenderCell: function (date, cellType) {
-        if (cellType === 'day') {
-            const day = date.getDay();
-            if (day === 6 || day === 0){
-            return{
-              classes: '-selected-',
-            };
-            }
-        };
-        }*/
+    });
 
-  });
-
-  if(jsDates==0){
+  if(inDates==0){
     let docNode = document.querySelectorAll('div.-weekend-:not(.-disabled-)');
     docNode.forEach(doc => doc.classList.add("-selected-"));}
   else{
-    $name.selectDate(jsDates);}
+    $name.selectDate(inDates);}
 }
 }
 
@@ -147,12 +89,9 @@ dateElements.forEach(function(element) {
     var year = element.dataset.year;
     var month = parseInt(element.dataset.month)+1;
     var day = element.dataset.date;
-    var date = year+"-"+month.toString()+"-"+day;//new Date(year, month, day);
+    var date = year+"-"+month.toString()+"-"+day;
     selectedDates.push(date);
   });
-  console.log(selectedDates);
-  console.log(JSON.stringify(selectedDates));
-
 
 let csrftoken = $("[name=csrfmiddlewaretoken]").val();
 
@@ -163,12 +102,11 @@ $.ajax({
     data: {'my_year': currentYear,
            'my_dates': JSON.stringify(selectedDates)},
     success: function(response) {
-        console.log("All dates are sent successfully");
         $('#alert_success_upload').fadeIn();
         setTimeout(()=>{$('#alert_success_upload').fadeOut();}, 10000)
     },
     error: function(response) {
-    console.log('something happened'+response.error);
+    console.log('something wrong: '+response.error);
   }
 });
 }
@@ -184,7 +122,9 @@ rebootButton.addEventListener('click', function(){createCalendar(currentYear);})
 var confirmButton = document.getElementById('confirm-btn');
 confirmButton.addEventListener('click', ()=>{changeButtons(confirmButton)})
 var incrementYearButton = document.getElementById('incrementYear-btn');
+incrementYearButton.addEventListener('click', ()=>{incrementYear()})
 var decrementYearButton = document.getElementById('decrementYear-btn');
+decrementYearButton.addEventListener('click', ()=>{decrementYear()})
 
 function changeButtons(button) {
     if (button.id === 'edit-btn' && button.classList.contains('button-active')){
@@ -194,6 +134,8 @@ function changeButtons(button) {
         hideButton(rebootButton);
         revealButton(saveButton);
         revealButton(cancelButton);
+        document.querySelector('#container').classList.remove('-view-');
+        editAddBreadCrumb('Edit Calendar');
         }
     else if (button.id === 'cancel-btn' && button.classList.contains('button-active')){
         hideButton(button);
@@ -202,6 +144,8 @@ function changeButtons(button) {
         revealButton(decrementYearButton);
         revealButton(editButton);
         revealButton(rebootButton);
+        document.querySelector('#container').classList.add('-view-');
+        editRemoveBreadCrumb();
         }
     else if (button.id === 'save-btn' && button.classList.contains('button-active')){
         var promise = new Promise(function(resolve,reject){$('#saveModalCenter').modal('show', function(){resolve();})})
@@ -222,4 +166,25 @@ function hideButton(button){
 function revealButton(button){
     button.classList.remove('button-hidden');
     button.classList.add('button-active');
+}
+
+function editAddBreadCrumb(newText){
+    const currentBreadcrumb = document.querySelector('.breadcrumb-item.active');
+    currentBreadcrumb.classList.remove('active');
+    currentBreadcrumb.removeAttribute('aria-current')
+    const breadcrumbList = document.getElementById('breadcrumb-list');
+    const newCrumb = document.createElement('li');
+    newCrumb.classList.add('breadcrumb-item', 'active');
+    newCrumb.setAttribute('aria-current', 'page');
+    newCrumb.textContent = newText;
+    breadcrumbList.appendChild(newCrumb);
+}
+
+function editRemoveBreadCrumb(){
+    const breadcrumbList = document.getElementById('breadcrumb-list');
+    const currentBreadcrumb = document.querySelector('.breadcrumb-item.active');
+    breadcrumbList.removeChild(currentBreadcrumb);
+    const prevCrumb = document.querySelector('.breadcrumb-item:last-child');
+    prevCrumb.classList.add('active');
+    prevCrumb.setAttribute('aria-current', 'page');
 }
