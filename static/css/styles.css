@@ -3,8 +3,9 @@
 }
 
 .col{
-    padding: 0px 0px;
-
+    padding: 10px 10px;
+    display: flex;
+    justify-content: center;
 }
 
 .-inline-{
@@ -13,7 +14,27 @@
 
 #container{
     background-color: #E9ECEF;
-    padding: 10px 10px
+    padding: 10px 20px
+}
+#current-year{
+    border-radius: .25rem;
+}
+
+.footer-btn{
+    padding: 10px;
+}
+
+.input-group-append button.btn+.btn{
+    margin-left: 5px;
+}
+
+.button-hidden {
+    display: none;
+
+}
+
+.button-active {
+    display: block;
 }
 
 .button-hidden {

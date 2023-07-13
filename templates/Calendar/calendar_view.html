@@ -47,17 +47,19 @@
           </script>
           </div>
         {% block main_buttons %}
-        <div class="input-group-append d-flex justify-content-end">
-            <button type="button" id="edit-btn" class="btn btn-primary button-active">Редактировать</button>
-            <button type="button" id="save-btn" class="btn btn-danger button-hidden">Сохранить</button>
-            <button type="button" id="cancel-btn" class="btn btn-warning button-hidden">Отмена</button>
-            <button type="button" class="btn btn-secondary button-active" id="reboot-btn" >Обновить</button>
-        </div>
-        <div class="modal fade" id="saveModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="footer-btn">
+            <div class="input-group-append d-flex justify-content-end">
+                <button type="button" id="edit-btn" class="btn btn-primary button-active">Редактировать</button>
+                <button type="button" id="save-btn" class="btn btn-danger button-hidden">Сохранить</button>
+                <button type="button" id="cancel-btn" class="btn btn-warning button-hidden">Отмена</button>
+                <button type="button" id="reboot-btn"  class="btn btn-secondary button-active">Обновить</button>
+            </div>
+            </div>
+        <div class="modal fade" id="saveModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Сохранение календаря</h5>
+                        <h5 class="modal-title" id="ModalLongTitle">Сохранение календаря</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -66,8 +68,7 @@
                         Вы уверены, что хотите сохранить экземпляр календаря за этот год?
                     </div>
                     <script>
-                    var promise = new Promise(function(){setTimeout(() => {const getYear = document.getElementById("current-year").value.toString()}, 100);});
-                    promise.then(()=>{document.getElementById('confirm-info').innerText='Вы уверены, что хотите сохранить экземпляр календаря за '+getYear+' год?'})</script>
+                    setTimeout(()=>{document.getElementById('confirm-info').innerText='Вы уверены, что хотите сохранить экземпляр календаря за '+document.getElementById("current-year").value.toString()+' год?'},500)</script>
                     <div class="modal-footer">
                         <button type="button" id="confirm-btn" class="btn btn-primary">Сохранить изменения</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
@@ -75,8 +76,11 @@
                 </div>
             </div>
         </div>
-        <div class="alert alert-success" role="alert">
-        Сохранение данных прошло успешно!
+        <div class="alert alert-success alert-dismissible fade show" id="alert_success_upload" role="alert" style="display: none;">
+            <span>Сохранение данных прошло успешно!</span>
+          <button type="button" class="close" onclick="$('#alert_success_upload').fadeOut()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         {% endblock main_buttons %}
     </main>

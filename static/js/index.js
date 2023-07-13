@@ -163,7 +163,9 @@ $.ajax({
     data: {'my_year': currentYear,
            'my_dates': JSON.stringify(selectedDates)},
     success: function(response) {
-        console.log("All dates are sent successfully")
+        console.log("All dates are sent successfully");
+        $('#alert_success_upload').fadeIn();
+        setTimeout(()=>{$('#alert_success_upload').fadeOut();}, 10000)
     },
     error: function(response) {
     console.log('something happened'+response.error);
