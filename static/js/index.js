@@ -68,6 +68,9 @@ for (let i = 0; i < 12; i++) {
     weekends:[6,0],
     showOtherMonths:false,
     moveToOtherMonthsOnSelect: false,
+    disableNavWhenOutOfRange: true,
+    minView: 'months',
+    startView: 'days',
     navTitles: {
     days: '<strong >MMMM</strong>' },
     minDate:new Date(currentYear, i, 1),
@@ -75,16 +78,20 @@ for (let i = 0; i < 12; i++) {
     });
 
   if(inDates==0){
-    let docNode = document.querySelectorAll('div.-weekend-:not(.-disabled-)');
+    let docNode = document.querySelectorAll('div.air-datepicker-cell.-day-.-weekend-:not(.-other-month-)');
     docNode.forEach(doc => doc.classList.add("-selected-"));}
   else{
     $name.selectDate(inDates);}
 }
+let dayNode = document.querySelectorAll('div.air-datepicker-cell.-day-:not(.-other-month-)');
+dayNode.forEach(doc => doc.classList.add("-disabled-"));
+let monthNode = document.querySelectorAll('div.air-datepicker-nav--title');
+monthNode.forEach(doc => doc.classList.add("-disabled-"));
 }
 
 function postDates() {
 let selectedDates = [];
-var dateElements = document.querySelectorAll('div.air-datepicker-cell.-selected-');
+var dateElements = document.querySelectorAll('div.air-datepicker-cell.-day-.-selected-');
 dateElements.forEach(function(element) {
     var year = element.dataset.year;
     var month = parseInt(element.dataset.month)+1;
@@ -118,7 +125,7 @@ saveButton.addEventListener('click', function () {changeButtons(saveButton);});
 var cancelButton = document.getElementById('cancel-btn');
 cancelButton.addEventListener('click', function () {changeButtons(cancelButton);});
 var rebootButton = document.getElementById('reboot-btn');
-rebootButton.addEventListener('click', function(){createCalendar(currentYear);});
+rebootButton.addEventListener('click', function(){getDateArray(currentYear);;});
 var confirmButton = document.getElementById('confirm-btn');
 confirmButton.addEventListener('click', ()=>{changeButtons(confirmButton)})
 var incrementYearButton = document.getElementById('incrementYear-btn');
@@ -136,6 +143,8 @@ function changeButtons(button) {
         revealButton(cancelButton);
         document.querySelector('#container').classList.remove('-view-');
         editAddBreadCrumb('Edit Calendar');
+        let dayNode = document.querySelectorAll('div.-day-:not(.-other-month-)');
+        dayNode.forEach(doc => doc.classList.remove("-disabled-"));
         }
     else if (button.id === 'cancel-btn' && button.classList.contains('button-active')){
         hideButton(button);
@@ -146,16 +155,16 @@ function changeButtons(button) {
         revealButton(rebootButton);
         document.querySelector('#container').classList.add('-view-');
         editRemoveBreadCrumb();
+        setTimeout(()=>getDateArray(currentYear), 300)
         }
     else if (button.id === 'save-btn' && button.classList.contains('button-active')){
-        var promise = new Promise(function(resolve,reject){$('#saveModalCenter').modal('show', function(){resolve();})})
-        promise.then(()=>{changeButtons(cancelButton)})
+        $('#saveModalCenter').modal('show')
         }
     else if (button.id === 'confirm-btn'){
         $('#saveModalCenter').modal('hide');
-        changeButtons(cancelButton);
         postDates();
-        }
+        changeButtons(cancelButton);
+       }
 }
 
 function hideButton(button){

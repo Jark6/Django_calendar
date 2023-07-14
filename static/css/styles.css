@@ -23,7 +23,8 @@
 
 #container{
     background-color: #E9ECEF;
-    padding: 10px 20px
+    padding: 10px 20px;
+    width: fit-content;
 }
 #current-year{
     border-radius: .25rem;
@@ -39,6 +40,7 @@
 
 #container:not(.-view-) > div .air-datepicker-cell.-day-.-selected- {
     background: #CC3333;
+    border-radius: 0.25rem;
 }
 
 .button-hidden {
@@ -59,10 +61,16 @@
 
 }
 
+#navbarSupportedContent{
+justify-content: end;
+}
+
 @media (min-width: 1124px) {
-.navbar.navbar-expand-lg.navbar-light, h1, #breadcrumb-list, .input-group.mb-3, .footer-btn{
+.container-box{
     width:1024px;
     align-items: center;
+    margin-right: auto;
+    margin-left: auto;
     }
 }
 

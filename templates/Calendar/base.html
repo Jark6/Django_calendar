@@ -22,57 +22,62 @@
 <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-light">
-  <a class="navbar-brand">U6 Internal web Apps <span class="navbar-brand mb-0 h1">DEV</span></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<div class="container-box">
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand">U6 Internal web Apps <span class="navbar-brand mb-0 h1">DEV</span></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownApps" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         <i class="bi bi-grid-3x3-gap-fill" color="#7f7f7f"></i> Приложения
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Первое приложение</a>
-          <a class="dropdown-item" href="#">Второе приложение</a>
-          <a class="dropdown-item" href="#">Третье приложение</a>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSettings" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         <i class="bi-wrench-adjustable-circle" color="#7f7f7f"></i> Настройки
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>
-            <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="bi bi-person-gear" color="#7f7f7f"></i> Администратор kvk
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Профиль</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Выход</a>
-        </div>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLang" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          RU
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">RU</a>
-          <a class="dropdown-item" href="#">EN</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#"><i class="bi bi-moon-fill"></i></a>
-      </li>
-    </ul>
-  </div>
-</nav>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownApps" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="bi bi-grid-3x3-gap-fill" color="#7f7f7f"></i> Приложения
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Первое приложение</a>
+            <a class="dropdown-item" href="#">Второе приложение</a>
+            <a class="dropdown-item" href="#">Третье приложение</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSettings" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="bi-wrench-adjustable-circle" color="#7f7f7f"></i> Настройки
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="bi bi-person-gear" color="#7f7f7f"></i> Администратор kvk
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Профиль</a>
+            <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Выход</a>
+            </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLang" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            RU
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">RU</a>
+            <a class="dropdown-item" href="#">EN</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="bi bi-moon-fill"></i></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
 {% block content %}
 {% endblock content %}
   <script src="{% static 'js/air-datepicker.js' %}"></script>
